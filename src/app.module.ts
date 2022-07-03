@@ -17,6 +17,7 @@ console.log('hello mysql');
       password: '774936188',
       database: 'taskOfHuma',
       entities: ['dist/**/*.entity.{ts,js}'],
+      synchronize: true,
     }),
     UserModule,
   ],

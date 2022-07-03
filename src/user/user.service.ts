@@ -3,8 +3,6 @@ import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-
-
 interface IUserInfo {
   firstName: string;
   lastName: string;
@@ -21,16 +19,26 @@ export class UserService {
   async findOne(id: number) {
     try {
       const user = await this.userRepository.findOneBy({ id });
+      console.log(user);
+
+      if (!user) {
+        return { msg: 'id is wrong !!!' };
+      }
       return user;
     } catch (error) {
-      console.log(`err of findOne in service-a`);
+      console.log(`err of findOne in service-a:${error}`);
     }
   }
 
   async addUser(userInfo: IUserInfo) {
     try {
+      console.log(JSON.stringify(userInfo));
+
       const user = await this.userRepository.save(userInfo);
-      return 'user created successfully';
+      console.log(user);
+      console.log(JSON.stringify(user));
+
+      return { msg: 'user created successfully' };
     } catch (error) {
       console.log(`err of addUser in service-a`);
     }
