@@ -20,6 +20,20 @@ interface IUserInfo {
 export default class UserController {
   constructor(private userService: UserService) {}
 
+
+  @GrpcMethod()
+  async findAll():Promise<Array<object>| object> {
+    try {
+  
+      const result =await this.userService.findAll();
+      
+      console.log(`result of Get Req in api-gateway service:${result}`);
+      return result;
+    } catch (error) {
+      console.log(`err of findOne in api-gateway controller:${error}`);
+    }
+  }
+
   @GrpcMethod()
   async findOne(id: string): Promise<IUserInfo | object> {
     try {
@@ -34,6 +48,7 @@ export default class UserController {
     }
   }
 
+  
   @GrpcMethod()
   async addUser(userInfo: CreatUserDto): Promise<object> {
     try {

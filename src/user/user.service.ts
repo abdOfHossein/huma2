@@ -30,6 +30,19 @@ export class UserService {
     }
   }
 
+  async findAll() {
+    try {
+      const users = await this.userRepository.find({});
+      console.log(users);
+
+      if (!users || users.length==0) {
+        return { msg: 'there is not any user...' };
+      }
+      return users;
+    } catch (error) {
+      console.log(`err of findOne in service-a:${error}`);
+    }
+  }
   async addUser(userInfo: IUserInfo) {
     try {
       console.log(JSON.stringify(userInfo));
