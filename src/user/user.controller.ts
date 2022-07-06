@@ -15,18 +15,25 @@ interface IUserInfo {
   phoneNumber: number;
 }
 
+interface IId {
+  id: number;
+}
+
+interface IReqBodyUpdateUSer {
+  id: number;
+  info: IUserInfo;
+}
+
 @Controller('user')
 // @UseInterceptors(ClassSerializerInterceptor)
 export default class UserController {
   constructor(private userService: UserService) {}
 
-
   @GrpcMethod()
-  async findAll():Promise<Array<object>| object> {
+  async findAll(): Promise<Array<object> | object> {
     try {
-  
-      const result =await this.userService.findAll();
-      
+      const result = await this.userService.findAll();
+
       console.log(`result of Get Req in api-gateway service:${result}`);
       return result;
     } catch (error) {
@@ -48,13 +55,25 @@ export default class UserController {
     }
   }
 
-  
   @GrpcMethod()
   async addUser(userInfo: CreatUserDto): Promise<object> {
     try {
       console.log(`userInfo addUser postqrSql:${userInfo}`);
 
       return this.userService.addUser(userInfo);
+    } catch (error) {
+      console.log(`err of findOne in api-gateway controller:${error}`);
+    }
+  }
+
+  //update user
+  @GrpcMethod()
+  async updateUser(reqBodyUpdateUSer: IReqBodyUpdateUSer): Promise<object> {
+    try {
+      console.log(reqBodyUpdateUSer);
+      console.log(JSON.stringify(reqBodyUpdateUSer));
+
+      return this.userService.updateUser(reqBodyUpdateUSer);
     } catch (error) {
       console.log(`err of findOne in api-gateway controller:${error}`);
     }

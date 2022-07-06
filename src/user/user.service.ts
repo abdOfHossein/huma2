@@ -1,14 +1,21 @@
 import { Controller, Get, Injectable } from '@nestjs/common';
 import { User } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsUtils, Repository } from 'typeorm';
 
 interface IUserInfo {
   firstName: string;
   lastName: string;
   phoneNumber: number;
 }
+interface IId {
+  id: number;
+}
 
+interface IReqBodyUpdateUSer {
+  id: number;
+  info: IUserInfo;
+}
 @Injectable()
 export class UserService {
   constructor(
@@ -35,7 +42,7 @@ export class UserService {
       const users = await this.userRepository.find({});
       console.log(users);
 
-      if (!users || users.length==0) {
+      if (!users || users.length == 0) {
         return { msg: 'there is not any user...' };
       }
       return users;
@@ -54,6 +61,33 @@ export class UserService {
       return { msg: 'user created successfully' };
     } catch (error) {
       console.log(`err of addUser in service-a`);
+    }
+  }
+
+  //update user
+  async updateUser(reqBodyUpdateUSer: IReqBodyUpdateUSer) {
+    try {
+      console.log(
+        `reqBodyUpdateUSer.id,,,reqBodyUpdateUSer.info===>${reqBodyUpdateUSer.id},${reqBodyUpdateUSer.info}`,
+      );
+
+      const updatedUser = await this.userRepository.update(
+        reqBodyUpdateUSer.id,
+        reqBodyUpdateUSer.info,
+      );
+      console.log(updatedUser);
+      console.log(JSON.stringify(updatedUser));
+      if (updatedUser.affected == 0) {
+        return { msg: 'something is wrong!!! we can not update user...' };
+      }
+      return { msg: 'user updated successfully' };
+    } catch (error) {
+      console.log(
+        `err of updateUser user-service in postgrSqlService:${error}`,
+      );
+      return {
+        error: `can not update user===>${error}`,
+      };
     }
   }
 }
