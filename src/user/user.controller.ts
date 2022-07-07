@@ -30,11 +30,11 @@ export default class UserController {
   constructor(private userService: UserService) {}
 
   @GrpcMethod()
-  async findAll(): Promise<Array<object> | object> {
+  async findAll(): Promise<Array<any>| object> {
     try {
       const result = await this.userService.findAll();
 
-      console.log(`result of Get Req in api-gateway service:${result}`);
+      console.log(`result of findAll in api-gateway service:${JSON.stringify(result)}`);
       return result;
     } catch (error) {
       console.log(`err of findOne in api-gateway controller:${error}`);
@@ -76,6 +76,17 @@ export default class UserController {
       return this.userService.updateUser(reqBodyUpdateUSer);
     } catch (error) {
       console.log(`err of findOne in api-gateway controller:${error}`);
+    }
+  }
+
+  //delete user
+  @GrpcMethod()
+  async deleteUser(id:number): Promise<object> {
+    try {
+
+      return this.userService.deleteUser(id);
+    } catch (error) {
+      console.log(`err of deleteUser in controller in postgrSqlService:${error}`);
     }
   }
 }

@@ -41,6 +41,7 @@ export class UserService {
     try {
       const users = await this.userRepository.find({});
       console.log(users);
+      console.log(`users in sercie===>${JSON.stringify(users)}`);
 
       if (!users || users.length == 0) {
         return { msg: 'there is not any user...' };
@@ -68,7 +69,9 @@ export class UserService {
   async updateUser(reqBodyUpdateUSer: IReqBodyUpdateUSer) {
     try {
       console.log(
-        `reqBodyUpdateUSer.id,,,reqBodyUpdateUSer.info===>${reqBodyUpdateUSer.id},${reqBodyUpdateUSer.info}`,
+        `reqBodyUpdateUSer.id,,,reqBodyUpdateUSer.info===>${
+          reqBodyUpdateUSer.id
+        },${JSON.stringify(reqBodyUpdateUSer.info)}`,
       );
 
       const updatedUser = await this.userRepository.update(
@@ -87,6 +90,26 @@ export class UserService {
       );
       return {
         error: `can not update user===>${error}`,
+      };
+    }
+  }
+  //delete user
+  async deleteUser(id: number) {
+    try {
+      const result = await this.userRepository.delete(id);
+      console.log(result);
+
+      console.log(JSON.stringify(result));
+      if (result.affected == 0) {
+        return { msg: 'error user does not deleted' };
+      }
+      return { msg: 'user deleted successfully' };
+    } catch (error) {
+      console.log(
+        `err of deleteUser user-service in postgrSqlService:${error}`,
+      );
+      return {
+        error: `can not delete user===>${error}`,
       };
     }
   }
