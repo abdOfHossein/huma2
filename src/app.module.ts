@@ -10,14 +10,15 @@ console.log('hello mysql');
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'mysql',
+      type: 'postgres',
       host: 'localhost',
-      port: 3306,
-      username: 'root',
+      port: 5432,
+      username: 'postgres',
       password: '774936188',
-      database: 'taskOfHuma',
-      entities: ['dist/**/*.entity.{ts,js}'],
+      database: 'user',
+      entities: ['dist/**/*.entity.js'],
       synchronize: true,
+      logging: true,
     }),
     UserModule,
   ],

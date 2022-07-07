@@ -23,19 +23,20 @@ interface IReqBodyUpdateUSer {
   id: number;
   info: IUserInfo;
 }
-
+interface IUsers{
+  data:Array<IUserInfo>
+}
 @Controller('user')
-// @UseInterceptors(ClassSerializerInterceptor)
 export default class UserController {
   constructor(private userService: UserService) {}
 
   @GrpcMethod()
-  async findAll(): Promise<Array<any>| object> {
+  async findAll(): Promise<IUsers| object> {
     try {
       const result = await this.userService.findAll();
 
       console.log(`result of findAll in api-gateway service:${JSON.stringify(result)}`);
-      return result;
+      return {data:result};
     } catch (error) {
       console.log(`err of findOne in api-gateway controller:${error}`);
     }
